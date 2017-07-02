@@ -37,9 +37,10 @@ check (value in
 
 );
 */
-drop domain if exists Type_product, Bill_type;
+
 drop table if exists client, instrument, solist, solist_play, band, band_component, band_component_play, Product, Track, Cover,
-	bill, concerning;
+	bill, concerning, genre  ;
+drop domain if exists Type_product, Bill_type;
 create domain Type_product as varchar(3) check ( value in ('CD', 'DVD'));
 create domain Bill_type as varchar check ( value in ('mastercard', 'visa', 'paypal'));
 create table Genre (
@@ -110,23 +111,18 @@ create table Cover (
 	Product integer not null references Product(id)
 );
 create table Bill (
-	id serial primary key, 
-	data date not null,
+	--id serial primary key, 
+	data TIMESTAMP ,
 	ip_pc varchar(30) not null check ( ip_pc similar to '[0-9]?[0-9]?[0-9].[0-9]?[0-9]?[0-9].[0-9]?[0-9]?[0-9].[0-9]?[0-9]?[0-9]'), -- '[0-9]?[0-9]?[0-9].[0-9]?[0-9]?[0-9].[0-9]?[0-9]?[0-9].[0-9]?[0-9]?[0-9]'
 	type Bill_type not null,
-	client varchar(50) references Client(username)
+	client varchar(50) references Client(username),
+	PRIMARY KEY(data,client)
 );
 
 create table  concerning (
-	bill integer references Bill(id),
+	billdata TIMESTAMP ,
+	billclient VARCHAR(50),
 	Product integer references Product(id),
-	primary key (bill, Product)
+	primary key (billdata, billclient, Product),
+	FOREIGN KEY(billdata,billclient) REFERENCES Bill(data, client)
 );
-
-
-
-
-
-
-
-

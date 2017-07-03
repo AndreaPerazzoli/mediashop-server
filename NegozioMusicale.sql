@@ -33,54 +33,59 @@ check (value in
             'Beats',
             'Metal',
             'Hard Rock',
-            'psychedelic',
+            'Psychedelic',
 
 );
 */
 
-drop table if exists client, instrument, solist, solist_play, band, band_component, band_component_play, Product, Track, Cover,
+drop table if exists client, instrument, soloist, soloist_play, band, band_component, band_component_play, Product, Track, Cover,
 	bill, concerning, genre  ;
 drop domain if exists Type_product, Bill_type;
 create domain Type_product as varchar(3) check ( value in ('CD', 'DVD'));
-create domain Bill_type as varchar check ( value in ('mastercard', 'visa', 'paypal'));
+create domain Bill_type as varchar check ( value in ('Mastercard', 'Visa', 'Paypal'));
 create table Genre (
 	name varchar(50) primary key
 );
+
 create table Client (
 	username varchar(50) primary key,
-	password VARCHAR(20) NOT NULL,
+	password VARCHAR(20) NOT NULL CHECK(LENGTH(password) BETWEEN 8 AND 20),
 	city varchar(30) not null, 
 	fiscalCode char(16) not null UNIQUE check (fiscalCode similar to '[0-9a-zA-Z]{16}'),
 	name varchar(50) not null,
 	surname varchar(50) not null,
-	phone varchar(30) not null check (phone similar to '[+]?[0-9]+'),
-	mobilePhone varchar(30) check (mobilePhone similar to '[+]?[0-9]+'),
+	phone varchar(30) not null check (phone similar to '\+?[0-9]+'),
+	mobilePhone varchar(30) check (mobilePhone similar to '\+?[0-9]+'),
 	favoriteGenre varchar(50) references Genre
 );
+
 create table Instrument (
 	instrument varchar(50) primary key
 );
-create table Solist(
+
+create table Soloist(
 	stageName varchar(50) PRIMARY KEY, 
 	mainGenre genre not null,
 	birthday date not null
 );
 
-create table solist_play (
-	solist varchar(50) references Solist (stageName),
+create table soloist_play (
+	soloist varchar(50) references Soloist (stageName),
 	instrument varchar(50) references Instrument,
-	primary key (solist, instrument)
+	primary key (soloist, instrument)
 );
 
 create table Band (
 	bandName varchar(50) primary key
 );
+
 create table band_component (
 	name varchar(40),
 	surname varchar(40),
 	bandName varchar (50) references Band,
 	primary key (name, surname, bandName)
 );
+
 create table band_component_play (
 	name varchar(40),
 	surname varchar(40), 
@@ -101,15 +106,18 @@ create table Product (
 	solist varchar(50) references Solist(stageName),
 	bandName varchar(50) references Band
 );
+
 create table Track (
 	title varchar(50),
 	Product integer references Product(id),
 	primary key ( title, Product)
 );
+
 create table Cover (
 	url_cover varchar primary key, /* oppure data ? */
 	Product integer not null references Product(id)
 );
+
 create table Bill (
 	--id serial primary key, 
 	data TIMESTAMP ,
@@ -119,10 +127,10 @@ create table Bill (
 	PRIMARY KEY(data,client)
 );
 
-create table  concerning (
-	billdata TIMESTAMP ,
-	billclient VARCHAR(50),
+create table  Concerning (
+	billData TIMESTAMP ,
+	billClient VARCHAR(50),
 	Product integer references Product(id),
-	primary key (billdata, billclient, Product),
-	FOREIGN KEY(billdata,billclient) REFERENCES Bill(data, client)
+	PRIMARY key (billData, billClient, Product),
+	FOREIGN KEY(billData, billClient) REFERENCES Bill(data, client)
 );

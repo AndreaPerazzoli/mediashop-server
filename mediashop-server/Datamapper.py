@@ -24,7 +24,7 @@ class DM_PG():
         if cls.__dbCon is None:
             try:
                 cls.__dbCon = psycopg2.connect(host=cls.__server, database=cls.__db, user=cls.__user, password=cls.__pw)
-                cls.__dbCon.set_session(readonly=True, autocommit=True)  # Connessione di lettura condivisa
+                cls.__dbCon.set_session(autocommit=True)  # Connessione di lettura condivisa
                 logging.info("Connection to database " + cls.__db + " created.")
             except psycopg2.OperationalError as err:
                 logging.error("Error connecting to PostgreSQL DBMS at %s.\nDetails: %s.", cls.__server, err)
@@ -97,17 +97,23 @@ class DM_PG():
     def buyProductWithId(self, productId, clientIP, paymentType, clientUsername):
 
         currentDate = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
-
+        print(currentDate)
+        print(clientIP)
+        print(paymentType)
+        print(clientUsername)
         with DM_PG.__cursor() as cur:
 
 
             cur.execute(
                 'INSERT INTO Bill(data,ip_pc,type,client) '
-                'VALUES (%s, %s, %s, %s)', (currentDate, clientIP, paymentType, clientUsername)
+                'VALUES (%s, %s, %s, %s) RETURNING id ', (currentDate, clientIP, paymentType, clientUsername)
             )
 
-            id = DM_PG.cursor.lastrowid
 
+
+            id = cur.fetchone()
+            id = id['id'] # {'id':'3'}
+            print(id)
             cur.execute(
                 'INSERT INTO concerning(billId,Product) '
                 'VALUES (%s, %s)', (id, productId)

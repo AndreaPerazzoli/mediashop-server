@@ -107,6 +107,9 @@ class DM_PG():
                 'INSERT INTO Bill(data,ip_pc,type,client) '
                 'VALUES (%s, %s, %s, %s)', (currentDate, clientIP, paymentType, clientUsername)
             )
+
+            print(DM_PG.cursor.lastrowid)
+
             cur.execute(
                 'INSERT INTO concerning(billdata,billclient,Product) '
                 'VALUES (%s, %s, %s)', (currentDate, clientUsername, product[0])

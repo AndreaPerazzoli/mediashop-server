@@ -8,8 +8,8 @@ class Model:
 	def __del__(self):
 		self.datamapper.close()
 
-	def getProduct(self):
-		return self.datamapper.getProduct()
+	def getProducts(self):
+		return self.datamapper.getProducts()
 
 	def getProductById(self, id):
 		return self.datamapper.getProductById(id)

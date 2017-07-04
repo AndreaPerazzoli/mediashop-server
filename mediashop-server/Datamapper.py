@@ -95,24 +95,22 @@ class DM_PG():
     '''Method used by buying products. Requires the client to send productID to buy, paymenttype and clientID'''
 
     def buyProductWithId(self, productId, clientIP, paymentType, clientUsername):
-        product = self.getProductById(productId)
-
-        if not product:
-            return None
 
         currentDate = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
 
         with DM_PG.__cursor() as cur:
+
+
             cur.execute(
                 'INSERT INTO Bill(data,ip_pc,type,client) '
                 'VALUES (%s, %s, %s, %s)', (currentDate, clientIP, paymentType, clientUsername)
             )
 
-            print(DM_PG.cursor.lastrowid)
+            id = DM_PG.cursor.lastrowid
 
             cur.execute(
-                'INSERT INTO concerning(billdata,billclient,Product) '
-                'VALUES (%s, %s, %s)', (currentDate, clientUsername, product[0])
+                'INSERT INTO concerning(billId,Product) '
+                'VALUES (%s, %s)', (id, productId)
             )
 
             return cur.statusmessage

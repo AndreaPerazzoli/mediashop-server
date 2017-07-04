@@ -123,15 +123,11 @@ class DM_PG():
                 '   ON P.id = C.product'
                 'WHERE C.billClient = %s ', (clientUsername)
             )
-        if not list(cur):
-            return None
         return list(cur)
 
     '''Will return a list of suggested product id if client had a purchase history'''
     def suggestedProducts(self, clientUsername):
         purchased = self.purchesedProducts(clientUsername)
-        if not purchased:
-            return None #no suggestions
         return self.evaluateSuggestions(purchased)
 
     '''Wrapper that evaluate suggestions'''

@@ -1,4 +1,4 @@
-from DM_PG import DM_PG
+from Datamapper import DM_PG
 
 
 class Model:

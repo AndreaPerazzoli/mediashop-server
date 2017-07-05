@@ -1,9 +1,8 @@
 import logging
 from flask import jsonify
-from flask import Flask, request, render_template
-
+from flask import Flask, request
 from Model import Model
-
+import decimal
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
 model = app.model = Model()
@@ -13,7 +12,7 @@ model = app.model = Model()
 def getAllProducts():
 	'''Returns the entire list of products'''
 	result = model.getProducts()
-
+	result["price"] = decimal.Decimal(result["price"])
 	return  jsonify(result) #render_template("query_result.html", result=result)
 
 
@@ -22,7 +21,8 @@ def getProductById():
 	id = request.form["idProduct"]
 	result=model.getProductById(id)
 
-	return jsonify(result) 
+
+	return jsonify(result)
 
 @app.route('/buyProductById', methods=["POST"])
 def buyProductById():
@@ -35,6 +35,7 @@ def buyProductById():
 	result = model.buyProductWithId(productId, clientIP=clientIP, paymentType=paymentType, clientUsername=clientUsername)
 
 	return jsonify(result) #render_template("query_result.html", result=result)
+
 
 if __name__ == '__main__':
 	app.run(debug=True, host='0.0.0.0')

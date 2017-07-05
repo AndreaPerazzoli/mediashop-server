@@ -9,6 +9,7 @@ class Model:
 		self.datamapper.close()
 
 	def getProducts(self):
+
 		return self.datamapper.getProducts()
 
 	def getProductById(self, id):

@@ -75,6 +75,7 @@ create table band_component (
     name varchar(40),
     surname varchar(40),
     bandName varchar (50) references Band,
+
     primary key (name, surname, bandName)
 );
 create table band_component_play (
@@ -101,9 +102,11 @@ create table Track (
     Product integer references Product(id),
     primary key ( title, Product)
 );
-create table Cover (
-    url_cover varchar primary key, /* oppure data ? */
-    Product integer not null references Product(id)
+create table Cover(
+    product integer primary key references Product(id),
+    data_cover blob not null, /* oppure data ? */
+    type_cover varchar not null
+
 );
 create table Bill(
     id serial primary key,

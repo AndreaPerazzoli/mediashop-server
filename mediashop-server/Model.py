@@ -17,3 +17,9 @@ class Model:
 
 	def buyProductWithId(self, productId, clientIP, paymentType, clientUsername):
 		return self.datamapper.buyProductWithId(productId, clientIP, paymentType, clientUsername)
+
+	def login(self, username, password):
+		return self.datamapper.login(username, password)
+
+	def registration(self, username, password, city, fiscalCode, name, surname, phone, mobilePhone, favouriteGenre):
+		return self.datamapper.registration(username, password, city, fiscalCode, name, surname, phone, mobilePhone, favouriteGenre)

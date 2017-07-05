@@ -30,7 +30,7 @@ class MyEncoder(json.JSONEncoder):
 def getAllProducts():
 	'''Returns the entire list of products'''
 	result = model.getProducts()
-
+	print(result)
 
 
 	return jsonify(result)  # render_template("query_result.html", result=result)
@@ -56,6 +56,33 @@ def buyProductById():
 	                                clientUsername=clientUsername)
 
 	return jsonify(result)  # render_template("query_result.html", result=result)
+
+@app.route('/login', methods = ["POST"])
+def login():
+	username = request.form["username"]
+	password = request.form["password"]
+
+	result = model.login(username,password)
+
+	return jsonify(result)
+
+@app.route('/register', methods = ["POST"])
+def registration():
+	username = request.form["username"]
+	password = request.form["password"]
+	city = request.form["city"]
+	fiscalCode = request.form["fiscalCode"]
+	name = request.form["name"]
+	surname = request.form["surname"]
+	phone = request.form["phone"]
+	mobilePhone = request.form["mobilePhone"]
+	favouriteGenre = request.form["favouriteGenre"]
+
+	result = model.registration(username,password,city,fiscalCode,name,surname,phone,mobilePhone, favouriteGenre)
+
+	print(jsonify(result))
+
+	return jsonify(result)
 
 
 

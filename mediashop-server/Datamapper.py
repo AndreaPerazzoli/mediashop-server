@@ -6,7 +6,6 @@ import psycopg2.extras
 
 import getpass
 
-
 from flask import jsonify
 
 
@@ -55,7 +54,7 @@ class DM_PG():
 			# cls.__db4LogCon.close()
 			logging.info("Connection closed.")
 			cls.__dbCon = None
-			# cls.__dbCon = cls.__db4LogCon = None
+		# cls.__dbCon = cls.__db4LogCon = None
 
 	@classmethod
 	def __cursor(cls):
@@ -78,11 +77,44 @@ class DM_PG():
 		DM_PG.__nIstanze -= 1
 		DM_PG.__close()
 
+	def login(self, username, password):
+		with DM_PG.__cursor() as cur:
+			cur.execute(
+				'SELECT 1'
+				'FROM Client C '
+				'WHERE C.username = %s AND C.password = %s ', (username, password)
+
+			)
+			result = cur.fetchone()
+			if not result:
+				return 0
+
+			return 1
+
+	def registration(self, username, password, city, fiscalCode, name, surname, phone, mobilePhone, favoriteGenre):
+		if self.login(username,password) == 1:
+			return 0
+		else:
+			try:
+				with DM_PG.__cursor() as cur:
+					cur.execute(
+						'INSERT INTO Client(username, password, city, fiscalCode, name, surname, phone, mobilePhone, favoriteGenre) '
+						'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) ',
+						(username, password, city, fiscalCode, name, surname, phone, mobilePhone, favoriteGenre)
+
+					)
+
+				return [{"registered": 1}]
+			except psycopg2.OperationalError:
+				return [{"registered": 0}]
+
+
 	def getProducts(self):
 		with DM_PG.__cursor() as cur:
 			cur.execute(
 				'SELECT * '
-				'FROM Product'
+				'FROM Product P '
+				'LEFT JOIN Cover C ON C.product = P.id '
 			)
 
 			return list(cur)
@@ -91,7 +123,7 @@ class DM_PG():
 		with DM_PG.__cursor() as cur:
 			cur.execute(
 				'SELECT * '
-				'FROM Product '
+				'FROM Product P '
 				'WHERE id = %s', (id,)
 			)
 
@@ -106,21 +138,23 @@ class DM_PG():
 		print(clientIP)
 		print(paymentType)
 		print(clientUsername)
-		with DM_PG.__cursor() as cur:
-			cur.execute(
-				'INSERT INTO Bill(data,ip_pc,type,client) '
-				'VALUES (%s, %s, %s, %s) RETURNING id ', (currentDate, clientIP, paymentType, clientUsername)
-			)
+		try:
+			with DM_PG.__cursor() as cur:
+				cur.execute(
+					'INSERT INTO Bill(data,ip_pc,type,client) '
+					'VALUES (%s, %s, %s, %s) RETURNING id ', (currentDate, clientIP, paymentType, clientUsername)
+				)
 
-			id = cur.fetchone()
-			id = id['id']  # {'id':'3'}
-			print(id)
-			cur.execute(
-				'INSERT INTO concerning(billId,Product) '
-				'VALUES (%s, %s)', (id, productId)
-			)
-
-			return cur.statusmessage
+				id = cur.fetchone()
+				id = id['id']  # {'id':'3'}
+				print(id)
+				cur.execute(
+					'INSERT INTO concerning(billId,Product) '
+					'VALUES (%s, %s)', (id, productId)
+				)
+				return 1
+		except psycopg2.OperationalError:
+			return 0
 
 	'''Return all product bought by the given clientUsername'''
 
@@ -202,21 +236,21 @@ class DM_PG():
 			blob = cur.fetchone()
 			print(blob)
 			open(path_to_dir + blob['title'] + '.' + blob['type_cover'], 'wb').write(blob['data_cover'])
-			# close the communication with the PostgresQL database
+		# close the communication with the PostgresQL database
 
 
 
 
 
-			# def log(self, idModel: str, instant: datetime, methodName: str):
-			#     """Scrive il log sulla tabella InsegnamentiLog che deve \ essere presente nel database cls.__database4Log.
-			#     CREATE TABLE INSEGNAMENTILOG (id SERIAL PRIMARY KEY, \ idModeApp VARCHAR NOT NULL , instant TIMESTAMP NOT NULL , \
-			#      methodName VARCHAR NOT NULL)"""
-			#     if idModel is None or methodName is None or instant is None:
-			#         return
-			#     with DM_PG.__cursor4log() as cur:
-			#         cur.execute("INSERT INTO InsegnamentiLog(idModeApp ,instant , methodName) VALUES (%s,%s,%s)",(idModel , instant , methodName))
-			#         if cur.rowcount != 1:
-			#             logging.error("Log has not been written. Details: " + idModel + ", " + str(instant) + "," + methodName)
-			#             return False
-			#         return True
+		# def log(self, idModel: str, instant: datetime, methodName: str):
+		#     """Scrive il log sulla tabella InsegnamentiLog che deve \ essere presente nel database cls.__database4Log.
+		#     CREATE TABLE INSEGNAMENTILOG (id SERIAL PRIMARY KEY, \ idModeApp VARCHAR NOT NULL , instant TIMESTAMP NOT NULL , \
+		#      methodName VARCHAR NOT NULL)"""
+		#     if idModel is None or methodName is None or instant is None:
+		#         return
+		#     with DM_PG.__cursor4log() as cur:
+		#         cur.execute("INSERT INTO InsegnamentiLog(idModeApp ,instant , methodName) VALUES (%s,%s,%s)",(idModel , instant , methodName))
+		#         if cur.rowcount != 1:
+		#             logging.error("Log has not been written. Details: " + idModel + ", " + str(instant) + "," + methodName)
+		#             return False
+		#         return True

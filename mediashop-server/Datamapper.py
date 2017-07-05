@@ -1,9 +1,13 @@
+import json
 from datetime import datetime
 import time
 import logging
 import psycopg2.extras
 
 import getpass
+
+
+from flask import jsonify
 
 
 class DM_PG():

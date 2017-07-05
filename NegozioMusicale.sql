@@ -53,7 +53,7 @@ create table Client (
     surname varchar(50) not null,
     phone varchar(30) not null check (phone similar to '[+]{0,1}[0-9]+'),
     mobilePhone varchar(30) check (mobilePhone similar to '[+]{0,1}[0-9]+'),
-    favoriteGenre varchar(50) references Genre
+    favouriteGenre varchar(50) references Genre
 );
 create table Instrument (
     instrument varchar(50) primary key

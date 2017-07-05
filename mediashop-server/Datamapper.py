@@ -78,66 +78,116 @@ class DM_PG():
 		DM_PG.__close()
 
 	def login(self, username, password):
-		with DM_PG.__cursor() as cur:
-			cur.execute(
-				'SELECT 1'
-				'FROM Client C '
-				'WHERE C.username = %s AND C.password = %s ', (username, password)
+		try:
+			with DM_PG.__cursor() as cur:
+				cur.execute(
+					'SELECT 1'
+					'FROM Client C '
+					'WHERE C.username = %s AND C.password = %s ', (username, password)
 
-			)
-			result = cur.fetchone()
-			if not result:
-				return 0
+				)
+				result = cur.fetchone()
+				if not result:
+					return [{"logged": 0}]
 
-			return 1
+				return [{"logged": 1}]
+		except psycopg2.Error as err:
+			error_string = "Log in error.\nDetails:" + str(err)
+			logging.error(error_string)
+			return [{"error": error_string}]
 
 	def registration(self, username, password, city, fiscalCode, name, surname, phone, mobilePhone, favoriteGenre):
-		if self.login(username,password) == 1:
-			return 0
-		else:
-			try:
-				with DM_PG.__cursor() as cur:
-					cur.execute(
-						'INSERT INTO Client(username, password, city, fiscalCode, name, surname, phone, mobilePhone, favoriteGenre) '
-						'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) ',
-						(username, password, city, fiscalCode, name, surname, phone, mobilePhone, favoriteGenre)
+		try:
+			with DM_PG.__cursor() as cur:
+				cur.execute(
+					'INSERT INTO Client(username, password, city, fiscalCode, name, surname, phone, mobilePhone, favouriteGenre) '
+					'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) ',
+					(username, password, city, fiscalCode, name, surname, phone, mobilePhone, favoriteGenre)
 
-					)
+				)
 
-				return [{"registered": 1}]
-			except psycopg2.OperationalError:
-				return [{"registered": 0}]
-
+			return [{"registered": 1}]
+		except psycopg2.IntegrityError as ierr:
+			error_string = "Registration error.\nDetails:" + str(ierr)
+			logging.error(error_string)
+			return [{"registered": 0}]
+		except psycopg2.Error as err:
+			error_string = "Registration error.\nDetails:" + str(err)
+			logging.error(error_string)
+			return [{"error": error_string}]
 
 	def getProducts(self):
-		with DM_PG.__cursor() as cur:
-			cur.execute(
-				'SELECT * '
-				'FROM Product P '
-				'LEFT JOIN Cover C ON C.product = P.id '
-			)
+		try:
+			with DM_PG.__cursor() as cur:
+				cur.execute(
+					'SELECT * '
+					'FROM Product P '
+					'LEFT JOIN Cover C ON C.product = P.id '
+				)
 
-			return list(cur)
+				return list(cur)
+		except psycopg2.Error as err:
+			error_string = "Get error.\nDetails:" + str(err)
+			logging.error(error_string)
+			return [{"error": error_string}]
+
+
+	def searchProductBy(self, attribute, subject):
+		attribute = "P." + attribute
+		subject = "%" + subject + "%"
+		try:
+			with DM_PG.__cursor() as cur:
+				cur.execute(
+					"SELECT * "
+					"FROM Product P "
+					"LEFT JOIN Cover C ON C.product = P.id "
+					"WHERE %s ilike %s ",(attribute, subject)
+				)
+
+				return list(cur)
+		except psycopg2.Error as err:
+			error_string = "Search error.\nDetails:" + str(err)
+			logging.error(error_string)
+			return [{"error": error_string}]
+
+
+	def searchProductByPrice(self, minPrice, maxPrice):
+		try:
+			with DM_PG.__cursor() as cur:
+				cur.execute(
+					"SELECT * "
+					"FROM Product P "
+					"LEFT JOIN Cover C ON C.product = P.id "
+					"WHERE P.price BETWEEN %s AND %s ",(minPrice, maxPrice)
+				)
+
+				return list(cur)
+		except psycopg2.Error as err:
+			error_string = "Search error.\nDetails:" + str(err)
+			logging.error(error_string)
+			return [{"error": error_string}]
+
+
 
 	def getProductById(self, id):
-		with DM_PG.__cursor() as cur:
-			cur.execute(
-				'SELECT * '
-				'FROM Product P '
-				'WHERE id = %s', (id,)
-			)
+		try:
+			with DM_PG.__cursor() as cur:
+				cur.execute(
+					'SELECT * '
+					'FROM Product P '
+					'WHERE id = %s', (id,)
+				)
 
-			return list(cur)
+				return list(cur)
+		except psycopg2.Error as err:
+			error_string = "Get error.\nDetails:" + str(err)
+			logging.error(error_string)
+			return [{"error": error_string}]
+
 
 	'''Method used by buying products. Requires the client to send productID to buy, paymenttype and clientID'''
-
-	def buyProductWithId(self, productId, clientIP, paymentType, clientUsername):
-
+	def buyProductById(self, productId, clientIP, paymentType, clientUsername):
 		currentDate = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
-		print(currentDate)
-		print(clientIP)
-		print(paymentType)
-		print(clientUsername)
 		try:
 			with DM_PG.__cursor() as cur:
 				cur.execute(
@@ -147,44 +197,51 @@ class DM_PG():
 
 				id = cur.fetchone()
 				id = id['id']  # {'id':'3'}
-				print(id)
+
 				cur.execute(
 					'INSERT INTO concerning(billId,Product) '
 					'VALUES (%s, %s)', (id, productId)
 				)
-				return 1
-		except psycopg2.OperationalError:
-			return 0
+
+				return [{"bought": 1}]
+		except psycopg2.Error as err:
+			error_string = "Buying error.\nDetails:" + str(err)
+			logging.error(error_string)
+			return [{"error": error_string}]
+
 
 	'''Return all product bought by the given clientUsername'''
+	def getPurchasedProducts(self, clientUsername):
+		try:
+			with DM_PG.__cursor() as cur:
+				cur.execute(
+					'SELECT P.id, P.type, C.billData'
+					'FROM Product P JOIN Concerning C'
+					'   ON P.id = C.product'
+					'WHERE C.billClient = %s ', (clientUsername)
+				)
 
-	def purchesedProducts(self, clientUsername):
-		with DM_PG.__cursor() as cur:
-			cur.execute(
-				'SELECT P.id, P.type, C.billData'
-				'FROM Product P JOIN Concerning C'
-				'   ON P.id = C.product'
-				'WHERE C.billClient = %s ', (clientUsername)
-			)
-		if not list(cur):
-			return None
-		return list(cur)
+			return list(cur)
+		except psycopg2.Error as err:
+			error_string = "Get error.\nDetails:" + str(err)
+			logging.error(error_string)
+			return [{"error": error_string}]
+
 
 	'''Will return a list of suggested product id if client had a purchase history'''
-
 	def suggestedProducts(self, clientUsername):
-		purchased = self.purchesedProducts(clientUsername)
+		purchased = self.getPurchasedProducts(clientUsername)
 		if not purchased:
-			return None  # no suggestions
+			return []  # no suggestions
 		return self.evaluateSuggestions(purchased)
 
-	'''Wrapper that evaluate suggestions'''
 
+	'''Wrapper that evaluate suggestions'''
 	def evaluateSuggestions(self, purchaseHistory):
 		return (self.suggestionsFactoryFrom(self.getProducts(), purchaseHistory)).fetch(20)
 
-	'''Filter product if they are valid suggestions for the client'''
 
+	'''Filter product if they are valid suggestions for the client'''
 	def suggestionsFactoryFrom(self, allProducts, filter):
 		suggestionTips = self.filterForSuggestions(filter)
 		suggestions = []
@@ -209,33 +266,33 @@ class DM_PG():
 			return purchesed
 		return suggestionTips
 
-	def write_blob(self, part_id, path_to_file, file_extension):
-		""" insert a BLOB into a table """
-
-		# read data from a picture
-		drawing = open(path_to_file, 'rb').read()
-		# read database configuration
-
-
-		# create a new cursor object
-		with DM_PG.__cursor() as cur:
-			# execute the INSERT statement
-			cur.execute("INSERT INTO Cover(product,data_cover,type_cover) " +
-						"VALUES(%s,%s,%s)",
-						(part_id, psycopg2.Binary(drawing), file_extension))
-
-	def read_blob(self, part_id, path_to_dir):
-		""" read BLOB data from a table """
-
-		with DM_PG.__cursor() as cur:
-			cur.execute(""" SELECT P.title, C.type_cover, C.data_cover
-                            FROM Cover C
-                            INNER JOIN product P on C.product = P.id
-                            WHERE P.id = %s """, (part_id,))
-
-			blob = cur.fetchone()
-			print(blob)
-			open(path_to_dir + blob['title'] + '.' + blob['type_cover'], 'wb').write(blob['data_cover'])
+	# def write_blob(self, part_id, path_to_file, file_extension):
+	# 	""" insert a BLOB into a table """
+	#
+	# 	# read data from a picture
+	# 	drawing = open(path_to_file, 'rb').read()
+	# 	# read database configuration
+	#
+	#
+	# 	# create a new cursor object
+	# 	with DM_PG.__cursor() as cur:
+	# 		# execute the INSERT statement
+	# 		cur.execute("INSERT INTO Cover(product,data_cover,type_cover) " +
+	# 		            "VALUES(%s,%s,%s)",
+	# 		            (part_id, psycopg2.Binary(drawing), file_extension))
+	#
+	# def read_blob(self, part_id, path_to_dir):
+	# 	""" read BLOB data from a table """
+	#
+	# 	with DM_PG.__cursor() as cur:
+	# 		cur.execute(""" SELECT P.title, C.type_cover, C.data_cover
+    #                        FROM Cover C
+    #                        INNER JOIN product P on C.product = P.id
+    #                        WHERE P.id = %s """, (part_id,))
+	#
+	# 		blob = cur.fetchone()
+	# 		print(blob)
+	# 		open(path_to_dir + blob['title'] + '.' + blob['type_cover'], 'wb').write(blob['data_cover'])
 		# close the communication with the PostgresQL database
 
 

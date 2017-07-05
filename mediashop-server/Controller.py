@@ -12,29 +12,13 @@ logging.basicConfig(level=logging.DEBUG)
 model = app.model = Model()
 
 
-class MyEncoder(json.JSONEncoder):
-	def default(self, o):
-		if isinstance(o, decimal.Decimal):
-			return float(o)
-		if isinstance(o, datetime.datetime):
-			return o.isoformat()
-		if isinstance(o, list):
-			json_string = ""
-			for a in o:
-				json_string += json.JSONEncoder.default(self, a)
-			return json_string
-		return json.JSONEncoder.default(self, o)
-
-
 @app.route('/getAllProducts')
 def getAllProducts():
 	'''Returns the entire list of products'''
 	result = model.getProducts()
 	print(result)
 
-
 	return jsonify(result)  # render_template("query_result.html", result=result)
-
 
 
 @app.route('/getProductById', methods=["POST"])
@@ -52,10 +36,10 @@ def buyProductById():
 	clientUsername = request.form["clientUsername"]
 	clientIP = request.remote_addr
 
-	result = model.buyProductWithId(productId, clientIP=clientIP, paymentType=paymentType,
-	                                clientUsername=clientUsername)
+	result = model.buyProductById(productId, clientIP=clientIP, paymentType=paymentType, clientUsername=clientUsername)
 
 	return jsonify(result)  # render_template("query_result.html", result=result)
+
 
 @app.route('/login', methods = ["POST"])
 def login():
@@ -65,6 +49,7 @@ def login():
 	result = model.login(username,password)
 
 	return jsonify(result)
+
 
 @app.route('/register', methods = ["POST"])
 def registration():
@@ -79,11 +64,25 @@ def registration():
 	favouriteGenre = request.form["favouriteGenre"]
 
 	result = model.registration(username,password,city,fiscalCode,name,surname,phone,mobilePhone, favouriteGenre)
-
-	print(jsonify(result))
-
 	return jsonify(result)
 
+
+@app.route('/searchProduct', methods = ["POST"])
+def search():
+	attribute = request.form["attribute"]
+	subject = request.form["subject"]
+
+	result = model.searchProductBy(attribute, subject)
+	return jsonify(result)
+
+
+@app.route('/searchProductByPrice', methods = ["POST"])
+def searchProductByPrice():
+	minPrice = request.form["minPrice"]
+	maxPrice = request.form["maxPrice"]
+
+	result = model.searchProductByPrice(minPrice,maxPrice)
+	return jsonify(result)
 
 
 if __name__ == '__main__':

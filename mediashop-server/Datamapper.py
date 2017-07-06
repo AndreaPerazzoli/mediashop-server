@@ -134,16 +134,22 @@ class DM_PG():
 			return [{"error": error_string}]
 
 
-	def searchProductBy(self, attribute, subject):
-		attribute = "P." + attribute
-		subject = "%" + subject + "%"
+	def searchProductBy(self, subject):
+
+		dictd = dict(like='%' + subject + '%')
+
+
 		try:
 			with DM_PG.__cursor() as cur:
 				cur.execute(
 					"SELECT * "
 					"FROM Product P "
 					"LEFT JOIN Cover C ON C.product = P.id "
-					"WHERE %s ilike %s ",(attribute, subject)
+					"WHERE P.description ILIKE %(like)s "
+					"OR P.title ILIKE %(like)s "
+					"OR P.soloist ILIKE %(like)s "
+					"OR P.type ILIKE %(like)s "
+					"OR P.bandName ILIKE %(like)s ESCAPE '='", dictd
 				)
 
 				return list(cur)

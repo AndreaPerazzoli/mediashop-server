@@ -23,8 +23,8 @@ class Model:
 	def registration(self, username, password, city, fiscalCode, name, surname, phone, mobilePhone, favouriteGenre):
 		return self.datamapper.registration(username, password, city, fiscalCode, name, surname, phone, mobilePhone, favouriteGenre)
 
-	def searchProductBy(self, attribute, subject):
-		return self.datamapper.searchProductBy(attribute, subject)
+	def searchProductBy(self, subject):
+		return self.datamapper.searchProductBy( subject)
 
 	def searchProductByPrice(self, minPrice, maxPrice):
 		return self.datamapper.searchProductByPrice(minPrice, maxPrice)

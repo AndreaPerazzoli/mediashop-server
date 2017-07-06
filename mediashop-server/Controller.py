@@ -76,7 +76,7 @@ def search():
 	return jsonify(result)
 
 
-@app.route('/searchProductByPrice', methods = ["POST"])
+@app.route('/searchProductByPrice', methods=["POST"])
 def searchProductByPrice():
 	minPrice = request.form["minPrice"]
 	maxPrice = request.form["maxPrice"]
@@ -84,6 +84,12 @@ def searchProductByPrice():
 	result = model.searchProductByPrice(minPrice,maxPrice)
 	return jsonify(result)
 
+@app.route('/purchaseHistory', methods=["POST"])
+def getPurchasedProducts():
+	userId = request.form["userId"]
+	print(userId)
+	result = model.getPurchasedProducts(userId)
+	return jsonify(result)
 
 if __name__ == '__main__':
 	app.run(debug=True, host='0.0.0.0')

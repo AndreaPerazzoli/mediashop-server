@@ -82,6 +82,7 @@ class InsertImg:
 						'VALUES(%s,%s,%s) ',
 						(part_id, psycopg2.Binary(drawing), file_extension))
 
+
 	def read_blob(self, part_id, path_to_dir):
 		""" read BLOB data from a table """
 

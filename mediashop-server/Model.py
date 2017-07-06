@@ -28,3 +28,6 @@ class Model:
 
 	def searchProductByPrice(self, minPrice, maxPrice):
 		return self.datamapper.searchProductByPrice(minPrice, maxPrice)
+
+	def getPurchasedProducts(self, clientUsername):
+		return self.datamapper.getPurchasedProducts(clientUsername)

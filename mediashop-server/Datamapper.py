@@ -82,16 +82,15 @@ class DM_PG():
 		try:
 			with DM_PG.__cursor() as cur:
 				cur.execute(
-					'SELECT 1'
+					'SELECT *'
 					'FROM Client C '
 					'WHERE C.username = %s AND C.password = %s ', (username, password)
 
 				)
-				result = cur.fetchone()
-				if not result:
-					return [{"logged": 0}]
 
-				return [{"logged": 1}]
+
+				return list(cur)
+
 		except psycopg2.Error as err:
 			error_string = "Log in error.\nDetails:" + str(err)
 			logging.error(error_string)
@@ -218,19 +217,20 @@ class DM_PG():
 		try:
 			with DM_PG.__cursor() as cur:
 				cur.execute(
-					'SELECT P.id, P.type, P.soloist, P.bandName, C.billData'
-					'FROM Product P JOIN Concerning C'
-					'   ON P.id = C.product'
-					'WHERE C.billClient = %s ', (clientUsername)
+					'SELECT P.id, P.type, P.soloist, P.bandName, B.data '
+					'FROM Product P '
+					'JOIN Concerning C ON P.id = C.product '
+					'JOIN Bill B ON C.billId = B.id '
+					'WHERE B.client = %s ', (clientUsername,)
 				)
 
-			return list(cur)
+				return list(cur)
 		except psycopg2.Error as err:
 			error_string = "Get error.\nDetails:" + str(err)
 			logging.error(error_string)
 			return [{"error": error_string}]
 
-
+	#TODO: needs testing
 	'''Will return a list of suggested product id if client had a purchase history'''
 	def suggestedProducts(self, clientUsername):
 		purchased = self.getPurchasedProducts(clientUsername)

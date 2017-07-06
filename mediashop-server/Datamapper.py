@@ -215,7 +215,7 @@ class DM_PG():
 		try:
 			with DM_PG.__cursor() as cur:
 				cur.execute(
-					'SELECT P.id, P.type, C.billData'
+					'SELECT P.id, P.type, P.soloist, P.bandName, C.billData'
 					'FROM Product P JOIN Concerning C'
 					'   ON P.id = C.product'
 					'WHERE C.billClient = %s ', (clientUsername)
@@ -246,12 +246,11 @@ class DM_PG():
 		suggestionTips = self.filterForSuggestions(filter)
 		suggestions = []
 		for row in allProducts:
-			if row['id'] not in filter.values and row['type'] in suggestionTips.values:
+			if row['id'] not in filter.values and (row['type'] in suggestionTips.values or ((row['soloist']!= None and row['soloist'] in suggestionTips.values) or (row['bandName'] != None and row['bandName'] in suggestionTips['bandName']))):
 				suggestions.append(row['id'])
 		return suggestions
 
 	'''Filter purchesed protuct to learn some suggestion tips'''
-
 	def filterForSuggestions(self, purchesed):
 		# if there aren't recent purchese and this client had bought less than 5 products
 		# our suggestions will be based on all his purchese history.

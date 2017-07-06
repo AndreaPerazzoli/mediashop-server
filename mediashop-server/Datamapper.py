@@ -77,6 +77,7 @@ class DM_PG():
 		DM_PG.__nIstanze -= 1
 		DM_PG.__close()
 
+
 	def login(self, username, password):
 		try:
 			with DM_PG.__cursor() as cur:
@@ -96,17 +97,18 @@ class DM_PG():
 			logging.error(error_string)
 			return [{"error": error_string}]
 
-	def registration(self, username, password, city, fiscalCode, name, surname, phone, mobilePhone, favoriteGenre):
+
+	def registration(self, username, password, city, fiscalCode, name, surname, phone, mobilePhone, favouriteGenre):
 		try:
 			with DM_PG.__cursor() as cur:
 				cur.execute(
 					'INSERT INTO Client(username, password, city, fiscalCode, name, surname, phone, mobilePhone, favouriteGenre) '
 					'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) ',
-					(username, password, city, fiscalCode, name, surname, phone, mobilePhone, favoriteGenre)
-
+					(username, password, city, fiscalCode, name, surname, phone, mobilePhone, favouriteGenre)
 				)
 
-			return [{"registered": 1}]
+			return [{"username": username, "password": password, "city":city, "fiscalCode": fiscalCode,
+			"name": name, "surname":surname, "phone":phone, "mobilePhone":mobilePhone, "favouriteGenre": favouriteGenre}]
 		except psycopg2.IntegrityError as ierr:
 			error_string = "Registration error.\nDetails:" + str(ierr)
 			logging.error(error_string)
@@ -115,6 +117,7 @@ class DM_PG():
 			error_string = "Registration error.\nDetails:" + str(err)
 			logging.error(error_string)
 			return [{"error": error_string}]
+
 
 	def getProducts(self):
 		try:
@@ -250,8 +253,8 @@ class DM_PG():
 				suggestions.append(row['id'])
 		return suggestions
 
-	'''Filter purchesed protuct to learn some suggestion tips'''
 
+	'''Filter purchesed protuct to learn some suggestion tips'''
 	def filterForSuggestions(self, purchesed):
 		# if there aren't recent purchese and this client had bought less than 5 products
 		# our suggestions will be based on all his purchese history.

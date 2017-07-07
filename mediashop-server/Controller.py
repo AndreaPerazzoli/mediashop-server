@@ -88,6 +88,12 @@ def getPurchasedProducts():
 	return jsonify(result)
 
 
+@app.route('/getTrackByProductId',methods=["POST"])
+def getTrackByProductId():
+	productId = request.form["productId"]
+	result = model.getTrackBy(productId)
+	return jsonify(result)
+
 
 if __name__ == '__main__':
 	app.run(debug=True, host='0.0.0.0')

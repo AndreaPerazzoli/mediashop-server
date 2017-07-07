@@ -134,7 +134,8 @@ class DM_PG():
 					'LEFT JOIN Band B ON P.bandName = B.bandName '
 					'LEFT JOIN Soloist S ON P.soloist = S.stagename '
 					'LEFT JOIN Cover C ON C.product = P.id '
-					'JOIN Track T ON T.Product = P.id'
+
+
 				)
 
 				return list(cur)
@@ -143,6 +144,22 @@ class DM_PG():
 			logging.error(error_string)
 			return [{"error": error_string}]
 
+	def getTrackBy(self, productId):
+		try:
+			with DM_PG.__cursor() as cur:
+				cur.execute(
+					'SELECT T.title , T.track_order '
+					'FROM Track T '
+					'JOIN Product P ON T.product = P.id '
+					'WHERE P.id = %s '
+					'ORDER BY T.track_order',(productId,)
+				)
+				return list(cur)
+
+		except psycopg2.Error as err:
+			error_string = "Get error.\nDetails:" + str(err)
+			logging.error(error_string)
+			return [{"error": error_string}]
 
 	def searchProductBy(self, subject):
 		dictd = dict(like='%' + subject + '%')

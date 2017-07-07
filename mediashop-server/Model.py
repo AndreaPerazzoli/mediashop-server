@@ -31,3 +31,6 @@ class Model:
 
 	def getPurchasedProducts(self, clientUsername):
 		return self.datamapper.getPurchasedProducts(clientUsername)
+
+	def getTrackBy(self, productId):
+		return  self.datamapper.getTrackBy(productId)

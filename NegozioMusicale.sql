@@ -107,7 +107,7 @@ create table Track (
 );
 create table Cover(
     product integer primary key references Product(id),
-    data_cover bytea not null, /* oppure data ? */
+    url_cover text not null, /* oppure data ? */
     type_cover varchar not null
 
 );

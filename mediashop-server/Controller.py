@@ -28,6 +28,7 @@ def getProductById():
 	return jsonify(result)
 
 
+
 @app.route('/buyProductById', methods=["POST"])
 def buyProductById():
 	productId = request.form["id"]

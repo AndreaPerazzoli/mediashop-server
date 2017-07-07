@@ -221,6 +221,7 @@ class DM_PG():
 			return [{"error": error_string}]
 
 
+
 	'''Return all product bought by the given clientUsername'''
 	def getPurchasedProducts(self, clientUsername):
 		try:

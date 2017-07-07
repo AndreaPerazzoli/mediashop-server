@@ -108,8 +108,6 @@ create table Track (
 create table Cover(
     product integer primary key references Product(id),
     url_cover text not null, /* oppure data ? */
-    type_cover varchar not null
-
 );
 create table Bill(
     id serial primary key,

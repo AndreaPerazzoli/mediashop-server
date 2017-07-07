@@ -34,5 +34,14 @@ class Model:
 
 	def getTrackBy(self, productId):
 		return  self.datamapper.getTrackBy(productId)
+
 	def getAllProductsPreferredByUsername(self, username):
 		return self.datamapper.getAllProductsPreferredByUsername(username)
+
+	def getProductByGenre(self, genre):
+		return self.datamapper.getProductByGenre(genre)
+
+	def getProductBySoloist(self, soloist):
+		return self.datamapper.getProductBySoloist(soloist)
+	def getProductByBand(self, bandName):
+		return self.datamapper.getProductByBand(bandName)

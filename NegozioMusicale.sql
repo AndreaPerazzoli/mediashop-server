@@ -52,7 +52,7 @@ create table Client (
     name varchar(50) not null,
     surname varchar(50) not null,
     phone varchar(30) not null check (phone similar to '[+]{0,1}[0-9]+'),
-    mobilePhone varchar(30) check ( mobilePhone IS NULL OR mobilePhone similar to '[+]{0,1}[0-9]+'),
+    mobilePhone varchar(30) check ( mobilePhone IS NULL OR mobilePhone similar to '[+]{0,1}[0-9]+')
 
 );
 create table Instrument (
@@ -163,6 +163,8 @@ INSERT INTO band_component_play(name,surname,bandName,instrument)
          
 insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Stella di David', 20.12, '2000/12/31', 'Classica', 9, 'ponazzo', 'DVD',null, 'I rossi');
 insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Domenica Al Bar', 45.12, '2000/12/22','Rap', 20,
+    'una domenica al bar con Vasco', 'CD','Vasco', null);
+insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('California Dream', 45.12, '2000/12/19','Rap', 20,
     'una domenica al bar con Vasco', 'CD','Vasco', null);
 insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Carotone al Pub', 20.12, '2000/12/31','Classica', 2, 'una domenica al bar con Vasco', 'DVD','Arisa', null);
     

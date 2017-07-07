@@ -34,3 +34,5 @@ class Model:
 
 	def getTrackBy(self, productId):
 		return  self.datamapper.getTrackBy(productId)
+	def getAllProductsPreferredByUsername(self, username):
+		return self.datamapper.getAllProductsPreferredByUsername(username)

@@ -1,12 +1,8 @@
-import datetime
-import json
-import logging
 
-import decimal
-from flask import jsonify
-from flask import Flask, request
+import logging
+from flask import Flask, request, jsonify
 from Model import Model
-import decimal
+
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
 model = app.model = Model()
@@ -17,7 +13,7 @@ def getAllProducts():
 	'''Returns the entire list of products'''
 	result = model.getProducts()
 
-	return jsonify(result)  # render_template("query_result.html", result=result)
+	return jsonify(result)
 
 
 @app.route('/getProductById', methods=["POST"])
@@ -38,10 +34,10 @@ def buyProductById():
 
 	result = model.buyProductById(productId, clientIP=clientIP, paymentType=paymentType, clientUsername=clientUsername)
 
-	return jsonify(result)  # render_template("query_result.html", result=result)
+	return jsonify(result)
 
 
-@app.route('/login', methods = ["POST"])
+@app.route('/login', methods=["POST"])
 def login():
 	username = request.form["username"]
 	password = request.form["password"]
@@ -51,7 +47,7 @@ def login():
 	return jsonify(result)
 
 
-@app.route('/register', methods = ["POST"])
+@app.route('/register', methods=["POST"])
 def registration():
 	username = request.form["username"]
 	password = request.form["password"]
@@ -67,7 +63,7 @@ def registration():
 	return jsonify(result)
 
 
-@app.route('/searchProduct', methods = ["POST"])
+@app.route('/searchProduct', methods=["POST"])
 def search():
 
 	subject = request.form["subject"]
@@ -76,7 +72,7 @@ def search():
 	return jsonify(result)
 
 
-@app.route('/searchProductByPrice', methods = ["POST"])
+@app.route('/searchProductByPrice', methods=["POST"])
 def searchProductByPrice():
 	minPrice = request.form["minPrice"]
 	maxPrice = request.form["maxPrice"]

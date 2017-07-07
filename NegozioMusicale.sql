@@ -92,6 +92,7 @@ create table Product (
     title varchar(50) not null,
     price decimal(7,2) not null,
     storedDate date not null,
+    main_genre varchar(50) not null references Genre , 
     quantity integer not null,
     description text not null,
     type Type_product not null,
@@ -101,7 +102,7 @@ create table Product (
 create table Track (
     title varchar(50) not null,
     track_order integer,
-	Product integer references Product(id),
+    Product integer references Product(id),
     primary key ( track_order, Product)
 );
 create table Cover(
@@ -157,12 +158,10 @@ INSERT INTO band_component_play(name,surname,bandName,instrument)
          ('Viola','Sfumatura','I viola','Basso'),
          ('Viola','Daltonico','I viola','Basso');
          
-insert into product (title, price, storedDate,quantity, description, type, soloist, bandName) values ('Stella di David', 20.12, '2000/12/31',9,
-    'ponazzo', 'DVD',null, 'I rossi');
-insert into product (title, price, storedDate, quantity,description, type, soloist, bandName) values ('Domenica Al Bar', 45.12, '2000/12/22',20,
+insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Stella di David', 20.12, '2000/12/31', 'Classica', 9, 'ponazzo', 'DVD',null, 'I rossi');
+insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Domenica Al Bar', 45.12, '2000/12/22','Rap', 20,
     'una domenica al bar con Vasco', 'CD','Vasco', null);
-insert into product (title, price, storedDate,quantity, description, type, soloist, bandName) values ('Carotone al Pub', 20.12, '2000/12/31',2,
-    'una domenica al bar con Vasco', 'DVD','Arisa', null);
+insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Carotone al Pub', 20.12, '2000/12/31','Classica', 2, 'una domenica al bar con Vasco', 'DVD','Arisa', null);
     
 insert into track (title,track_order, product) values ('Sole',1, 1);
 insert into track (title,track_order, product) values ('Mare',2, 1);

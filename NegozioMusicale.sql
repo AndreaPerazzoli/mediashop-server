@@ -53,7 +53,7 @@ create table Client (
     surname varchar(50) not null,
     phone varchar(30) not null check (phone similar to '[+]{0,1}[0-9]+'),
     mobilePhone varchar(30) check ( mobilePhone IS NULL OR mobilePhone similar to '[+]{0,1}[0-9]+'),
-    favouriteGenre varchar(50) DEFAULT 'Nessuno' references Genre
+
 );
 create table Instrument (
     instrument varchar(50) primary key
@@ -107,9 +107,7 @@ create table Track (
 );
 create table Cover(
     product integer primary key references Product(id),
-    url_cover text not null, /* oppure data ? */
-    type_cover varchar not null
-
+    url_cover text not null /* oppure data ? */
 );
 create table Bill(
     id serial primary key,
@@ -129,10 +127,10 @@ insert into genre values ('Classica');
 insert into genre values ('Rock');
 insert into genre values ('Rap');
 insert into genre values ('Pop');
-insert into client values ('enrico', 'asdasdasd','verona','asdasdasdasdasda','enrico','gigante','+98878778','+2312313123','Jazz' );
-insert into client values ('andrea', 'asdasdasd','verona','asdasdasdbsdasda','andrea','perazzoli','+988234328778','+2312313123','Rap' );
-insert into client values ('turo', 'asdasdasd','napoli','asdasdnsdasdasda','cristian','turetta','+98878778','+2312313123','Pop' );
-insert into client values ('fabio', 'asdasdasd','roma','asfasdasdasdasda','fabio','tagliaferro','+988234378','+2312313123','Rock' );
+insert into client values ('enrico', 'asdasdasd','verona','asdasdasdasdasda','enrico','gigante','+98878778','+2312313123' );
+insert into client values ('andrea', 'asdasdasd','verona','asdasdasdbsdasda','andrea','perazzoli','+988234328778','+2312313123' );
+insert into client values ('turo', 'asdasdasd','napoli','asdasdnsdasdasda','cristian','turetta','+98878778','+2312313123' );
+insert into client values ('fabio', 'asdasdasd','roma','asfasdasdasdasda','fabio','tagliaferro','+988234378','+2312313123' );
 insert into instrument (instrument) values ('Basso'),('chitarra'),('clarinetto'),('viola'),('arpa'),('Voice');
 insert into soloist (stageName, mainGenre, birthday) values ('Vasco','Rock', '12/12/1950'),('Arisa','Pop','12/12/1970');
 insert into soloist_play ( soloist, instrument) values ('Vasco','Voice'),('Arisa','Voice');

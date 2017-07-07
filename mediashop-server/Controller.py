@@ -16,14 +16,13 @@ model = app.model = Model()
 def getAllProducts():
 	'''Returns the entire list of products'''
 	result = model.getProducts()
-	print(result)
 
 	return jsonify(result)  # render_template("query_result.html", result=result)
 
 
 @app.route('/getProductById', methods=["POST"])
 def getProductById():
-	id = request.form["idProduct"]
+	id = request.form["id"]
 	result = model.getProductById(id)
 
 	return jsonify(result)
@@ -31,9 +30,9 @@ def getProductById():
 
 @app.route('/buyProductById', methods=["POST"])
 def buyProductById():
-	productId = request.form["productId"]
+	productId = request.form["id"]
 	paymentType = request.form["paymentType"]
-	clientUsername = request.form["clientUsername"]
+	clientUsername = request.form["client"]
 	clientIP = request.remote_addr
 
 	result = model.buyProductById(productId, clientIP=clientIP, paymentType=paymentType, clientUsername=clientUsername)
@@ -86,10 +85,11 @@ def searchProductByPrice():
 
 @app.route('/purchaseHistory')
 def getPurchasedProducts():
-	userId = request.form["userId"]
-	print(userId)
+	userId = request.form["username"]
 	result = model.getPurchasedProducts(userId)
 	return jsonify(result)
+
+
 
 if __name__ == '__main__':
 	app.run(debug=True, host='0.0.0.0')

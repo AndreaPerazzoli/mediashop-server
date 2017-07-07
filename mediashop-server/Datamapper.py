@@ -1,7 +1,10 @@
 import json
 from datetime import datetime
+from decimal import Decimal
 import time
 import logging
+
+import decimal
 import psycopg2.extras
 
 import getpass
@@ -160,6 +163,8 @@ class DM_PG():
 
 
 	def searchProductByPrice(self, minPrice, maxPrice):
+		minPrice = Decimal(minPrice)
+		maxPrice = Decimal(maxPrice)
 		try:
 			with DM_PG.__cursor() as cur:
 				cur.execute(
@@ -168,13 +173,11 @@ class DM_PG():
 					"LEFT JOIN Cover C ON C.product = P.id "
 					"WHERE P.price BETWEEN %s AND %s ",(minPrice, maxPrice)
 				)
-
 				return list(cur)
 		except psycopg2.Error as err:
 			error_string = "Search error.\nDetails:" + str(err)
 			logging.error(error_string)
 			return [{"error": error_string}]
-
 
 
 	def getProductById(self, id):

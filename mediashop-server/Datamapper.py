@@ -102,6 +102,10 @@ class DM_PG():
 
 	def registration(self, username, password, city, fiscalCode, name, surname, phone, mobilePhone, favouriteGenre):
 		try:
+			if mobilePhone == "" or str.lower(mobilePhone) == "null": mobilePhone = None
+			if favouriteGenre == "" or str.lower(favouriteGenre) == "": favouriteGenre = None
+
+			print(username, password, city, fiscalCode, name, surname, phone, mobilePhone, favouriteGenre)
 			with DM_PG.__cursor() as cur:
 				cur.execute(
 					'INSERT INTO Client(username, password, city, fiscalCode, name, surname, phone, mobilePhone, favouriteGenre) '
@@ -127,7 +131,10 @@ class DM_PG():
 				cur.execute(
 					'SELECT * '
 					'FROM Product P '
+					'LEFT JOIN Band B ON P.bandName = B.bandName '
+					'LEFT JOIN Soloist S ON P.soloist = S.stagename '
 					'LEFT JOIN Cover C ON C.product = P.id '
+					'JOIN Track T ON T.Product = P.id'
 				)
 
 				return list(cur)
@@ -138,9 +145,7 @@ class DM_PG():
 
 
 	def searchProductBy(self, subject):
-
 		dictd = dict(like='%' + subject + '%')
-
 
 		try:
 			with DM_PG.__cursor() as cur:

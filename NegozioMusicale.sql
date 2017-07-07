@@ -52,8 +52,8 @@ create table Client (
     name varchar(50) not null,
     surname varchar(50) not null,
     phone varchar(30) not null check (phone similar to '[+]{0,1}[0-9]+'),
-    mobilePhone varchar(30) check (mobilePhone similar to '[+]{0,1}[0-9]+'),
-    favouriteGenre varchar(50) references Genre
+    mobilePhone varchar(30) check ( mobilePhone IS NULL OR mobilePhone similar to '[+]{0,1}[0-9]+'),
+    favouriteGenre varchar(50) DEFAULT 'Nessuno' references Genre
 );
 create table Instrument (
     instrument varchar(50) primary key
@@ -93,7 +93,7 @@ create table Product (
     price decimal(7,2) not null,
     storedDate date not null,
     main_genre varchar(50) not null references Genre , 
-    quantity integer not null,
+    quantity integer not null CHECK(quantity >= 0),
     description text not null,
     type Type_product not null,
     soloist varchar(50) references Soloist(stageName),
@@ -123,6 +123,7 @@ create table  Concerning(
     Product integer references Product(id),
     PRIMARY key (billid, Product)
 );
+insert into genre values ('Nessuno');
 insert into genre values ('Jazz');
 insert into genre values ('Classica');
 insert into genre values ('Rock');

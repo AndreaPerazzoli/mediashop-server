@@ -3,13 +3,8 @@ from datetime import datetime
 from decimal import Decimal
 import time
 import logging
-import operator
-import decimal
+
 import psycopg2.extras
-
-import getpass
-
-from flask import jsonify
 
 
 class DM_PG():
@@ -225,7 +220,7 @@ class DM_PG():
 				cur.execute(
 					'SELECT * '
 					'FROM Product P '
-					'WHERE main_genre = %s', (genre,)
+					'WHERE main_genre ilike %s', (genre,)
 				)
 				return list(cur)
 		except psycopg2.Error as err:
@@ -240,7 +235,7 @@ class DM_PG():
 				cur.execute(
 					'SELECT * '
 					'FROM Product P '
-					'WHERE soloist = %s', (soloist,)
+					'WHERE soloist ilike %s', (soloist,)
 				)
 				return list(cur)
 		except psycopg2.Error as err:
@@ -255,7 +250,7 @@ class DM_PG():
 				cur.execute(
 					'SELECT * '
 					'FROM Product P '
-					'WHERE bandName = %s', (bandName,)
+					'WHERE bandName ilike %s', (bandName,)
 				)
 				return list(cur)
 		except psycopg2.Error as err:

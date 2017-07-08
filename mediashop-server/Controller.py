@@ -100,8 +100,15 @@ def getAllProductsPreferredByUsername():
 	result = model.getAllProductsPreferredByUsername(username)
 	return jsonify(result)
 
-@app.route('/getProductByGenre',methods=["POST"])
+@app.route('/getProductByAttribute',methods=["POST"])
 def getProductByAttribute():
+	attribute = request.form["attribute"]
+	value = request.form["value"]
+	result = model.getProductByAttribute(attribute, value)
+	return jsonify(result)
+
+@app.route('/getProductByGenre',methods=["POST"])
+def getProductByGenre():
 	genre = request.form["genre"]
 
 	result = model.getProductByGenre(genre)

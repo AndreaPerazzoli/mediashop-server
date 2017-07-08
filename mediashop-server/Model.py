@@ -45,3 +45,5 @@ class Model:
 		return self.datamapper.getProductBySoloist(soloist)
 	def getProductByBand(self, bandName):
 		return self.datamapper.getProductByBand(bandName)
+	def getProductByAttribute(self, attribute, value):
+		return self.datamapper.getProductByAttribute(attribute, value)

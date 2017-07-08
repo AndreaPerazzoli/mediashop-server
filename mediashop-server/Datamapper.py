@@ -212,6 +212,21 @@ class DM_PG():
 			logging.error(error_string)
 			return [{"error": error_string}]
 
+			# search by attribute, value
+	def getProductByAttribute(self, attribute, value):
+
+		dic = dict(like='%' + value + '%')
+		try:
+
+			with DM_PG.__cursor() as cur:
+				sql = "SELECT * FROM Product WHERE %s"%(attribute) +" ILIKE %(like)s ESCAPE '='"
+				cur.execute(sql, dic)
+				return list(cur)
+		except psycopg2.Error as err:
+			error_string = "Get error.\nDetails:" + str(err)
+			logging.error(error_string)
+		return [{"error": error_string}]
+
 	# ricerca per genre, soloist, bandName
 	def getProductByGenre(self, genre):
 		try:

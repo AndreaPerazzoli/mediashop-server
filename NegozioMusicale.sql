@@ -118,6 +118,7 @@ create table Bill(
     data TIMESTAMP ,
     ip_pc varchar(30) not null check ( ip_pc similar to '[0-9]?[0-9]?[0-9].[0-9]?[0-9]?[0-9].[0-9]?[0-9]?[0-9].[0-9]?[0-9]?[0-9]'), -- '[0-9]?[0-9]?[0-9].[0-9]?[0-9]?[0-9].[0-9]?[0-9]?[0-9].[0-9]?[0-9]?[0-9]'
     type Bill_type not null,
+    quantity integer not null check( quantity > 0), 
     client varchar(50) references Client(username)
 );
 create table  Concerning(

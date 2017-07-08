@@ -30,9 +30,10 @@ def buyProductById():
 	productId = request.form["id"]
 	paymentType = request.form["paymentType"]
 	clientUsername = request.form["client"]
+	numerOfProducts = request.form["quantity"]
 	clientIP = request.remote_addr
 
-	result = model.buyProductById(productId, clientIP=clientIP, paymentType=paymentType, clientUsername=clientUsername)
+	result = model.buyProductById(productId, clientIP, paymentType, clientUsername,numerOfProducts)
 
 	return jsonify(result)
 
@@ -100,33 +101,33 @@ def getAllProductsPreferredByUsername():
 	result = model.getAllProductsPreferredByUsername(username)
 	return jsonify(result)
 
-@app.route('/getProductByAttribute',methods=["POST"])
-def getProductByAttribute():
-	attribute = request.form["attribute"]
-	value = request.form["value"]
-	result = model.getProductByAttribute(attribute, value)
+# @app.route('/getProductByAttribute',methods=["POST"])
+# def getProductByAttribute():
+# 	attribute = request.form["attribute"]
+# 	value = request.form["value"]
+# 	result = model.getProductByAttribute(attribute, value)
+# 	return jsonify(result)
+
+@app.route('/getProductByGenre',methods=["POST"])
+def getProductByGenre():
+	genre = request.form["genre"]
+
+	result = model.getProductByGenre(genre)
 	return jsonify(result)
 
-# @app.route('/getProductByGenre',methods=["POST"])
-# def getProductByGenre():
-# 	genre = request.form["genre"]
-#
-# 	result = model.getProductByGenre(genre)
-# 	return jsonify(result)
-#
-# @app.route('/getProductBySoloist',methods=["POST"])
-# def getProductBySoloist():
-# 	soloist = request.form["soloist"]
-#
-# 	result = model.getProductBySoloist(soloist)
-# 	return jsonify(result)
-#
-# @app.route('/getProductByBand',methods=["POST"])
-# def getProductByBand():
-# 	bandName = request.form["bandName"]
-#
-# 	result = model.getProductByBand(bandName)
-# 	return jsonify(result)
+@app.route('/getProductBySoloist',methods=["POST"])
+def getProductBySoloist():
+	soloist = request.form["soloist"]
+
+	result = model.getProductBySoloist(soloist)
+	return jsonify(result)
+
+@app.route('/getProductByBand',methods=["POST"])
+def getProductByBand():
+	bandName = request.form["bandName"]
+
+	result = model.getProductByBand(bandName)
+	return jsonify(result)
 
 if __name__ == '__main__':
 	app.run(debug=True, host='0.0.0.0')

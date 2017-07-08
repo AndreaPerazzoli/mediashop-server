@@ -14,8 +14,8 @@ class Model:
 	def getProductById(self, id):
 		return self.datamapper.getProductById(id)
 
-	def buyProductById(self, productId, clientIP, paymentType, clientUsername):
-		return self.datamapper.buyProductById(productId, clientIP, paymentType, clientUsername)
+	def buyProductById(self, productId, clientIP, paymentType, clientUsername, numberOfProducts):
+		return self.datamapper.buyProductById(productId, clientIP, paymentType, clientUsername, numberOfProducts)
 
 	def login(self, username, password):
 		return self.datamapper.login(username, password)
@@ -38,13 +38,13 @@ class Model:
 	def getAllProductsPreferredByUsername(self, username):
 		return self.datamapper.getAllProductsPreferredByUsername(username)
 
-	# def getProductByGenre(self, genre):
-	# 	return self.datamapper.getProductByGenre(genre)
-	#
-	# def getProductBySoloist(self, soloist):
-	# 	return self.datamapper.getProductBySoloist(soloist)
-	# def getProductByBand(self, bandName):
-	# 	return self.datamapper.getProductByBand(bandName)
+	def getProductByGenre(self, genre):
+		return self.datamapper.getProductByAttribute("main_genre",genre)
+
+	def getProductBySoloist(self, soloist):
+		return self.datamapper.getProductByAttribute("soloist", soloist)
+	def getProductByBand(self, bandName):
+		return self.datamapper.getProductByAttribute("bandName", bandName)
 
 	def getProductByAttribute(self, attribute, value):
 		return self.datamapper.getProductByAttribute(attribute, value)

@@ -315,14 +315,29 @@ class DM_PG():
 		return [{"error": error_string}]
 
 	'''Method used by buying products. Requires the client to send productID to buy, paymenttype and clientID'''
-	def buyProductById(self, productId, clientIP, paymentType, clientUsername):
+	def buyProductById(self, productId, clientIP, paymentType, clientUsername, numberOfProducts):
 		currentDate = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
 		try:
 			with DM_PG.__cursor() as cur:
+				#CONTROLLO SE I PRODOTTI SONO DISPONIBILI
+				cur.execute(
+					'SELECT id ' 
+					'from Product '
+					'WHERE id = %s '
+					'and quantity>= %s ', (productId, numberOfProducts)
+				)
+
+				result = cur.fetchone()
+
+				if result['id'] != int(productId):
+					return [{"bought": 0}]
+
+
+
 
 				cur.execute(
-					'INSERT INTO Bill(data,ip_pc,type,client) '
-					'VALUES (%s, %s, %s, %s) RETURNING id ', (currentDate, clientIP, paymentType, clientUsername)
+					'INSERT INTO Bill(data,ip_pc,type,quantity, client) '
+					'VALUES (%s, %s, %s,%s, %s) RETURNING id ', (currentDate, clientIP, paymentType, clientUsername)
 				)
 
 				id = cur.fetchone()
@@ -332,35 +347,10 @@ class DM_PG():
 					'INSERT INTO concerning(billId,Product) '
 					'VALUES (%s, %s)', (id, productId)
 				)
-				# update preferred genre by username
-				# cur.execute(
-				# 	"UPDATE Client SET favouriteGenre = %s "
-				# 	"WHERE username = %s ",(preferredGenre, clientUsername)
-				#
-				# )
-				#ricerco il genere preferito in base agli acquisti degli utenti
-				# allPurchasedProducts =  self.getPurchasedProducts(clientUsername)
-				# contGenreDict = {"Classica":0, "Rap":0, "Pop":0,"Jazz":0}
-				# for genre in allPurchasedProducts:
-				# 	print(genre["main_genre"])
-				# 	if genre["main_genre"] == "Classica":
-				# 		contGenreDict["Classica"] = contGenreDict["Classica"] + 1
-				# 	elif genre["main_genre"] == "Rap":
-				# 		contGenreDict["Rap"] = contGenreDict["Rap"] + 1
-				# 	elif genre["main_genre"] == "Jazz":
-				# 		contGenreDict["Jazz"] = contGenreDict["Jazz"] + 1
-				# 	else:
-				# 		contGenreDict["Pop"] = contGenreDict["Pop"] + 1
-				# print(max(contGenreDict, key=contGenreDict.get))
-				# preferredGenre = max(contGenreDict, key=contGenreDict.get)
-
-
-				# #imposto il genere preferito
-				# cur.execute(
-				# 	"UPDATE Client SET favouriteGenre = %s "
-				# 	"WHERE username = %s ",(preferredGenre, clientUsername)
-				#
-				# )
+				cur.execute(
+					'UPDATE product SET quantity = quantity - %s'
+					'WHERE id = %s',(numberOfProducts,productId)
+				)
 
 
 				return [{"bought": 1}]

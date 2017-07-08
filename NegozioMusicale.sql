@@ -136,38 +136,37 @@ insert into client values ('enrico', 'asdasdasd','verona','asdasdasdasdasda','en
 insert into client values ('andrea', 'asdasdasd','verona','asdasdasdbsdasda','andrea','perazzoli','+988234328778','+2312313123' );
 insert into client values ('turo', 'asdasdasd','napoli','asdasdnsdasdasda','cristian','turetta','+98878778','+2312313123' );
 insert into client values ('fabio', 'asdasdasd','roma','asfasdasdasdasda','fabio','tagliaferro','+988234378','+2312313123' );
-insert into instrument (instrument) values ('Basso'),('chitarra'),('clarinetto'),('viola'),('arpa'),('Voice');
-insert into soloist (stageName, mainGenre, birthday) values ('Vasco','Rock', '12/12/1950'),('Arisa','Pop','12/12/1970');
-insert into soloist_play ( soloist, instrument) values ('Vasco','Voice'),('Arisa','Voice');
+insert into instrument (instrument) values ('Basso'),('chitarra'),('clarinetto'),('viola'),('arpa'),('Voice'), ('Guitar');
+insert into soloist (stageName, mainGenre, birthday) values ('Vasco','Rock', '12/12/1950'),('Arisa','Pop','12/12/1970'),('Cristian Zacarias', 'Classica', '12/12/1950'), ('Frank Zappa','Rock', '12/12/1950');
+insert into soloist_play ( soloist, instrument) values ('Vasco','Voice'),('Arisa','Voice'), ('Frank Zappa','Guitar');
 
 
 
-INSERT INTO Band(bandname) VALUES ('I rossi'), ('I bianchi'), ('I viola');
+INSERT INTO Band(bandname) VALUES ('Pink Floid'), ('Genesis'), ('The Beatles');
 INSERT INTO band_component(name, surname, bandname)
-        VALUES ('Rosso','Carminio','I rossi'),
-         ('Rosso','Acceso','I rossi'),
-         ('Bianco','Puro','I bianchi'),
-         ('Bianco','Acceso','I bianchi'),
-         ('Bianco','Spento','I bianchi'),
-         ('Viola', 'Spento', 'I viola'),
-         ('Viola', 'Sfumatura', 'I viola'),
-         ('Viola', 'Daltonico', 'I viola');
+        VALUES ('Rosso','Carminio','Pink Floid'),
+         ('Rosso','Acceso','Pink Floid'),
+         ('Bianco','Puro','Genesis'),
+         ('Bianco','Acceso','Genesis'),
+         ('Bianco','Spento','Genesis'),
+         ('Viola', 'Spento', 'The Beatles'),
+         ('Viola', 'Sfumatura', 'The Beatles'),
+         ('Viola', 'Daltonico', 'The Beatles');
 INSERT INTO band_component_play(name,surname,bandName,instrument)
-        VALUES ('Rosso','Carminio','I rossi','Basso'),
-         ('Rosso','Acceso','I rossi','chitarra'),
-         ('Bianco','Puro','I bianchi','Basso'),
-         ('Bianco','Acceso','I bianchi','Basso'),
-         ('Bianco','Spento','I bianchi','Basso'),
-         ('Viola','Spento','I viola','Basso'),
-         ('Viola','Sfumatura','I viola','Basso'),
-         ('Viola','Daltonico','I viola','Basso');
+        VALUES ('Rosso','Carminio','Pink Floid','Basso'),
+         ('Rosso','Acceso','Pink Floid','chitarra'),
+         ('Bianco','Puro','Genesis','Basso'),
+         ('Bianco','Acceso','Genesis','Basso'),
+         ('Bianco','Spento','Genesis','Basso'),
+         ('Viola','Spento','The Beatles','Basso'),
+         ('Viola','Sfumatura','The Beatles','Basso'),
+         ('Viola','Daltonico','The Beatles','Basso');
          
 insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Mozart piano Concerto', 20.12, '2000/12/31', 'Classica', 9, 'Piano concerto vol.6 Mozart', 'CD','Cristian Zacarias', null);
-insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Domenica Al Bar', 45.12, '2000/12/22','Rap', 20,
-    'una domenica al bar con Vasco', 'CD','Vasco', null);
-insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('California Dream', 45.12, '2000/12/19','Rap', 20,
-    'una domenica al bar con Vasco', 'CD','Vasco', null);
-insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Carotone al Pub', 20.12, '2000/12/31','Classica', 2, 'una domenica al bar con Vasco', 'DVD','Arisa', null);
+insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Non siamo mica gli americani', 45.01, '1987/12/22','Rock', 20, 'Non siamo mica gli americani è il secondo album in studio del cantautore italiano Vasco Rossi uscito nel 1979, pubblicato dalla casa discografica Lotus', 'DVD','Vasco', null);
+insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Hot rats', 45.12, '1980/12/10','Rock', 20,
+    'Hot Rats è il settimo album del musicista statunitense Frank Zappa (il suo secondo da solista) pubblicato negli Stati Uniti il 10 ottobre 1969. Il disco, fortemente influenzato da atmosfere jazz rock, non riscosse nessun successo commerciale in patria mentre in Europa, specialmente in Gran Bretagna (nona posizione) e nei Paesi Bassi (sesta posizione), ebbe un ottimo riscontro di pubblico diventando uno dei suoi dischi più celebri e conosciuti.', 'CD','Frank Zappa', null);
+insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Let it be',20.12, '2000/12/31','Pop', 2, 'Let It Be è una canzone dei Beatles del 1970, composta da Paul McCartney anche se viene come da consuetudine attribuita al duo compositivo Lennon/McCartney.', 'CD',null, 'The Beatles');
     
 insert into track (title,track_order, product) values ('Sole',1, 1);
 insert into track (title,track_order, product) values ('Mare',2, 1);
@@ -176,4 +175,8 @@ insert into track (title,track_order, product) values ('Cuore',1, 2);
 insert into track (title,track_order, product) values ('Martino',2, 2);
 insert into track (title,track_order, product) values ('Stella',3,2);
 
-insert into cover(product, url_cover) values (1, 'https://www.music-bazaar.com/album-images/vol1002/811/811476/2664465-big/Mozart-Piano-Concertos-Vol-6-cover.jpg')
+insert into cover(product, url_cover) values (1, 'https://www.music-bazaar.com/album-images/vol1002/811/811476/2664465-big/Mozart-Piano-Concertos-Vol-6-cover.jpg');
+insert into cover(product, url_cover) values (2, 'http://www.vascorossiundio.com/wp-content/uploads/2015/10/vasco-rossi-non-siamo-mica-gli-americani.jpg');
+insert into cover(product, url_cover) values (3, 'https://img.discogs.com/OK9dDmCAPSKb5E2mmbHEOhPT5n8=/fit-in/600x598/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-584013-1444143009-3942.jpeg.jpg');
+insert into cover(product, url_cover) values (4, 'https://upload.wikimedia.org/wikipedia/en/2/25/LetItBe.jpg');
+

@@ -3,13 +3,8 @@ from datetime import datetime
 from decimal import Decimal
 import time
 import logging
-import operator
-import decimal
+
 import psycopg2.extras
-
-import getpass
-
-from flask import jsonify
 
 
 class DM_PG():
@@ -217,51 +212,66 @@ class DM_PG():
 			logging.error(error_string)
 			return [{"error": error_string}]
 
-	# ricerca per genre, soloist, bandName
-	def getProductByGenre(self, genre):
-		try:
-			with DM_PG.__cursor() as cur:
+			# search by attribute, value
+	def getProductByAttribute(self, attribute, value):
 
-				cur.execute(
-					'SELECT * '
-					'FROM Product P '
-					'WHERE main_genre = %s', (genre,)
-				)
+		dic = dict(like='%' + value + '%')
+		try:
+
+			with DM_PG.__cursor() as cur:
+				sql = "SELECT * FROM Product WHERE %s"%(attribute) +" ILIKE %(like)s ESCAPE '='"
+				cur.execute(sql, dic)
 				return list(cur)
 		except psycopg2.Error as err:
 			error_string = "Get error.\nDetails:" + str(err)
 			logging.error(error_string)
 		return [{"error": error_string}]
 
-	def getProductBySoloist(self, soloist):
-		try:
-			with DM_PG.__cursor() as cur:
-
-				cur.execute(
-					'SELECT * '
-					'FROM Product P '
-					'WHERE soloist = %s', (soloist,)
-				)
-				return list(cur)
-		except psycopg2.Error as err:
-			error_string = "Get error.\nDetails:" + str(err)
-			logging.error(error_string)
-		return [{"error": error_string}]
-
-	def getProductByBand(self, bandName):
-		try:
-			with DM_PG.__cursor() as cur:
-
-				cur.execute(
-					'SELECT * '
-					'FROM Product P '
-					'WHERE bandName = %s', (bandName,)
-				)
-				return list(cur)
-		except psycopg2.Error as err:
-			error_string = "Get error.\nDetails:" + str(err)
-			logging.error(error_string)
-		return [{"error": error_string}]
+	# # ricerca per genre, soloist, bandName
+	# def getProductByGenre(self, genre):
+	# 	try:
+	# 		with DM_PG.__cursor() as cur:
+	#
+	# 			cur.execute(
+	# 				'SELECT * '
+	# 				'FROM Product P '
+	# 				'WHERE main_genre ilike %s', (genre,)
+	# 			)
+	# 			return list(cur)
+	# 	except psycopg2.Error as err:
+	# 		error_string = "Get error.\nDetails:" + str(err)
+	# 		logging.error(error_string)
+	# 	return [{"error": error_string}]
+	#
+	# def getProductBySoloist(self, soloist):
+	# 	try:
+	# 		with DM_PG.__cursor() as cur:
+	#
+	# 			cur.execute(
+	# 				'SELECT * '
+	# 				'FROM Product P '
+	# 				'WHERE soloist ilike %s', (soloist,)
+	# 			)
+	# 			return list(cur)
+	# 	except psycopg2.Error as err:
+	# 		error_string = "Get error.\nDetails:" + str(err)
+	# 		logging.error(error_string)
+	# 	return [{"error": error_string}]
+	#
+	# def getProductByBand(self, bandName):
+	# 	try:
+	# 		with DM_PG.__cursor() as cur:
+	#
+	# 			cur.execute(
+	# 				'SELECT * '
+	# 				'FROM Product P '
+	# 				'WHERE bandName ilike %s', (bandName,)
+	# 			)
+	# 			return list(cur)
+	# 	except psycopg2.Error as err:
+	# 		error_string = "Get error.\nDetails:" + str(err)
+	# 		logging.error(error_string)
+	# 	return [{"error": error_string}]
 
 
 	def getAllProductsPreferredByUsername(self, username):

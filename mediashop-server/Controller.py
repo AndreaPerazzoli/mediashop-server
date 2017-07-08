@@ -100,26 +100,33 @@ def getAllProductsPreferredByUsername():
 	result = model.getAllProductsPreferredByUsername(username)
 	return jsonify(result)
 
-@app.route('/getProductByGenre',methods=["POST"])
+@app.route('/getProductByAttribute',methods=["POST"])
 def getProductByAttribute():
-	genre = request.form["genre"]
-
-	result = model.getProductByGenre(genre)
+	attribute = request.form["attribute"]
+	value = request.form["value"]
+	result = model.getProductByAttribute(attribute, value)
 	return jsonify(result)
 
-@app.route('/getProductBySoloist',methods=["POST"])
-def getProductBySoloist():
-	soloist = request.form["soloist"]
-
-	result = model.getProductBySoloist(soloist)
-	return jsonify(result)
-
-@app.route('/getProductByBand',methods=["POST"])
-def getProductByBand():
-	bandName = request.form["bandName"]
-
-	result = model.getProductByBand(bandName)
-	return jsonify(result)
+# @app.route('/getProductByGenre',methods=["POST"])
+# def getProductByGenre():
+# 	genre = request.form["genre"]
+#
+# 	result = model.getProductByGenre(genre)
+# 	return jsonify(result)
+#
+# @app.route('/getProductBySoloist',methods=["POST"])
+# def getProductBySoloist():
+# 	soloist = request.form["soloist"]
+#
+# 	result = model.getProductBySoloist(soloist)
+# 	return jsonify(result)
+#
+# @app.route('/getProductByBand',methods=["POST"])
+# def getProductByBand():
+# 	bandName = request.form["bandName"]
+#
+# 	result = model.getProductByBand(bandName)
+# 	return jsonify(result)
 
 if __name__ == '__main__':
 	app.run(debug=True, host='0.0.0.0')

@@ -48,3 +48,6 @@ class Model:
 
 	def getProductByAttribute(self, attribute, value):
 		return self.datamapper.getProductByAttribute(attribute, value)
+
+	def availabilityOfProductId(self, productId):
+		return self.datamapper.availabilityOfProductId(productId)

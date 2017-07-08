@@ -337,7 +337,7 @@ class DM_PG():
 
 				cur.execute(
 					'INSERT INTO Bill(data,ip_pc,type,quantity, client) '
-					'VALUES (%s, %s, %s,%s, %s) RETURNING id ', (currentDate, clientIP, paymentType, clientUsername)
+					'VALUES (%s, %s, %s,%s, %s) RETURNING id ', (currentDate, clientIP, paymentType,numberOfProducts, clientUsername)
 				)
 
 				id = cur.fetchone()

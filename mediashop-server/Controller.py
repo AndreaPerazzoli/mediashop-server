@@ -36,7 +36,12 @@ def buyProductById():
 	result = model.buyProductById(productId, clientIP, paymentType, clientUsername,numerOfProducts)
 
 	return jsonify(result)
-
+@app.route('/getAvailability', methods=["POST"])
+def availabilityOfProductId():
+	productId = request.form["id"]
+	result = model.availabilityOfProductId(productId)
+	print(result)
+	return jsonify(result)
 
 @app.route('/login', methods=["POST"])
 def login():

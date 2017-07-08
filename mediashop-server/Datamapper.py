@@ -314,6 +314,23 @@ class DM_PG():
 			logging.error(error_string)
 		return [{"error": error_string}]
 
+	def availabilityOfProductId(self, productId):
+		try:
+			with DM_PG.__cursor() as cur:
+				#CONTROLLO SE I PRODOTTI SONO DISPONIBILI
+				cur.execute(
+					'SELECT quantity ' 
+					'from Product '
+					'WHERE id = %s ', (productId,)
+				)
+				return list(cur)
+
+		except psycopg2.Error as err:
+			error_string = "Get error.\nDetails:" + str(err)
+			logging.error(error_string)
+			return [{"error": error_string}]
+
+
 	'''Method used by buying products. Requires the client to send productID to buy, paymenttype and clientID'''
 	def buyProductById(self, productId, clientIP, paymentType, clientUsername, numberOfProducts):
 		currentDate = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')

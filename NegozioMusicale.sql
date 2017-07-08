@@ -158,7 +158,7 @@ INSERT INTO band_component_play(name,surname,bandName,instrument)
          ('Viola','Sfumatura','I viola','Basso'),
          ('Viola','Daltonico','I viola','Basso');
          
-insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Stella di David', 20.12, '2000/12/31', 'Classica', 9, 'ponazzo', 'DVD',null, 'I rossi');
+insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Mozart piano Concerto', 20.12, '2000/12/31', 'Classica', 9, 'Piano concerto vol.6 Mozart', 'CD','Cristian Zacarias', null);
 insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Domenica Al Bar', 45.12, '2000/12/22','Rap', 20,
     'una domenica al bar con Vasco', 'CD','Vasco', null);
 insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('California Dream', 45.12, '2000/12/19','Rap', 20,
@@ -171,3 +171,5 @@ insert into track (title,track_order, product) values ('Pioggia',3,1);
 insert into track (title,track_order, product) values ('Cuore',1, 2);
 insert into track (title,track_order, product) values ('Martino',2, 2);
 insert into track (title,track_order, product) values ('Stella',3,2);
+
+insert into cover(product, url_cover) values (1, 'https://www.music-bazaar.com/album-images/vol1002/811/811476/2664465-big/Mozart-Piano-Concertos-Vol-6-cover.jpg')

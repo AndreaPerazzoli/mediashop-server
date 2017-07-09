@@ -40,7 +40,7 @@ drop table if exists client, instrument, soloist, soloist_play, band, band_compo
     bill, concerning, genre CASCADE ;
 drop domain if exists Type_product, Bill_type;
 create domain Type_product as varchar(3) check ( value in ('CD', 'DVD'));
-create domain Bill_type as varchar check ( value in ('Mastercard', 'Visa', 'Paypal'));
+create domain Bill_type as varchar check ( value in ('Bankwire', 'Credit Card', 'Paypal'));
 create table Genre (
     name varchar(50) primary key
 );

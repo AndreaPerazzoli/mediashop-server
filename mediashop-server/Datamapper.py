@@ -218,7 +218,7 @@ class DM_PG():
 		try:
 
 			with DM_PG.__cursor() as cur:
-				sql = "SELECT * FROM Product WHERE %s"%(attribute) +" ILIKE %(like)s ESCAPE '='"
+				sql = "SELECT * FROM Product  LEFT JOIN Cover C ON C.product = id WHERE %s"%(attribute) +" ILIKE %(like)s ESCAPE '='"
 				cur.execute(sql, dic)
 				return list(cur)
 		except psycopg2.Error as err:

@@ -291,19 +291,23 @@ class DM_PG():
 						'join bill b on c.billid = b.id '
 						'where b.client = %s '
 						'group by p.main_genre) ', (username, username)
-
-
 				)
 				listcur = list(cur)
+				if not listcur:
+					return [{"error":0}]
 				preferredGenre = listcur[0]["main_genre"]
-
 				cur.execute(
 					'SELECT  * '
 					'FROM Product P '
 					'LEFT JOIN Band B ON P.bandName = B.bandName '
 					'LEFT JOIN Soloist S ON P.soloist = S.stagename '
 					'LEFT JOIN Cover C ON C.product = P.id '
-					'where P.main_genre = %s',(preferredGenre,)
+					'where P.main_genre = %s '
+					'and P.id not in ( '
+					'select c.product '
+					'from concerning c '
+					'join bill b on c.billid = b.id '
+					'where b.client = %s )',(preferredGenre,username)
 
 				)
 				return list(cur)

@@ -20,8 +20,8 @@ class Model:
 	def login(self, username, password):
 		return self.datamapper.login(username, password)
 
-	def registration(self, username, password, city, fiscalCode, name, surname, phone, mobilePhone, favouriteGenre):
-		return self.datamapper.registration(username, password, city, fiscalCode, name, surname, phone, mobilePhone, favouriteGenre)
+	def registration(self, username, password, city, fiscalCode, name, surname, phone, mobilePhone):
+		return self.datamapper.registration(username, password, city, fiscalCode, name, surname, phone, mobilePhone )
 
 	def searchProductBy(self, subject):
 		return self.datamapper.searchProductBy( subject)

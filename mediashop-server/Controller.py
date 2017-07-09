@@ -63,10 +63,9 @@ def registration():
 	surname = request.form["surname"]
 	phone = request.form["phone"]
 	mobilePhone = request.form["mobilePhone"]
-	favouriteGenre = request.form["favouriteGenre"]
 
 
-	result = model.registration(username,password,city,fiscalCode,name,surname,phone,mobilePhone, favouriteGenre)
+	result = model.registration(username,password,city,fiscalCode,name,surname,phone,mobilePhone)
 	return jsonify(result)
 
 

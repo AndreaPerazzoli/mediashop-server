@@ -107,11 +107,8 @@ create table Track (
 );
 create table Cover(
     product integer primary key references Product(id),
-<<<<<<< HEAD
-    url_cover text not null, /* oppure data ? */
-=======
     url_cover text not null /* oppure data ? */
->>>>>>> 35bcb182aa32431f6e6efd7e94dea02f374021e4
+
 );
 create table Bill(
     id serial primary key,

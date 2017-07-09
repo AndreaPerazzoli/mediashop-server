@@ -95,25 +95,24 @@ class DM_PG():
 			return [{"error": error_string}]
 
 
-	def registration(self, username, password, city, fiscalCode, name, surname, phone, mobilePhone, favouriteGenre):
+	def registration(self, username, password, city, fiscalCode, name, surname, phone, mobilePhone):
 		try:
 			if mobilePhone == "" or str.lower(mobilePhone) == "null": mobilePhone = None
-			if favouriteGenre == "" or str.lower(favouriteGenre) == "": favouriteGenre = None
 
-			print(username, password, city, fiscalCode, name, surname, phone, mobilePhone, favouriteGenre)
+			print(username, password, city, fiscalCode, name, surname, phone, mobilePhone)
 			with DM_PG.__cursor() as cur:
 				cur.execute(
-					'INSERT INTO Client(username, password, city, fiscalCode, name, surname, phone, mobilePhone, favouriteGenre) '
-					'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) ',
-					(username, password, city, fiscalCode, name, surname, phone, mobilePhone, favouriteGenre)
+					'INSERT INTO Client(username, password, city, fiscalCode, name, surname, phone, mobilePhone) '
+					'VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ',
+					(username, password, city, fiscalCode, name, surname, phone, mobilePhone)
 				)
 
 			return [{"username": username, "password": password, "city":city, "fiscalCode": fiscalCode,
-			"name": name, "surname":surname, "phone":phone, "mobilePhone":mobilePhone, "favouriteGenre": favouriteGenre}]
+			"name": name, "surname":surname, "phone":phone, "mobilePhone":mobilePhone}]
 		except psycopg2.IntegrityError as ierr:
 			error_string = "Registration error.\nDetails:" + str(ierr)
 			logging.error(error_string)
-			return [{"registered": 0}]
+			return [{"registered": error_string}]
 		except psycopg2.Error as err:
 			error_string = "Registration error.\nDetails:" + str(err)
 			logging.error(error_string)

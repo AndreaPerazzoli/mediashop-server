@@ -294,7 +294,7 @@ class DM_PG():
 				)
 				listcur = list(cur)
 				if not listcur:
-					return [{"error":0}]
+					return [{"preferred" :0}]
 				preferredGenre = listcur[0]["main_genre"]
 				cur.execute(
 					'SELECT  * '

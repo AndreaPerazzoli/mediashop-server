@@ -116,7 +116,7 @@ create table Bill(
     ip_pc varchar(30) not null check ( ip_pc similar to '[0-9]?[0-9]?[0-9].[0-9]?[0-9]?[0-9].[0-9]?[0-9]?[0-9].[0-9]?[0-9]?[0-9]'), -- '[0-9]?[0-9]?[0-9].[0-9]?[0-9]?[0-9].[0-9]?[0-9]?[0-9].[0-9]?[0-9]?[0-9]'
     type Bill_type not null,
     quantity integer not null check( quantity > 0), 
-    client varchar(50) references Client(username)
+    client varchar(50) not null references Client(username)
 );
 create table  Concerning(
     billId integer references Bill(id),
@@ -160,7 +160,7 @@ INSERT INTO band_component_play(name,surname,bandName,instrument)
          ('Viola','Daltonico','The Beatles','Basso');
          
 insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Mozart piano Concerto', 20.12, '2000/12/31', 'Classica', 9, 'Piano concerto vol.6 Mozart', 'CD','Cristian Zacarias', null);
-insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Non siamo mica gli americani', 45.01, '1987/12/22','Rock', 20, 'Non siamo mica gli americani è il secondo album in studio del cantautore italiano Vasco Rossi uscito nel 1979, pubblicato dalla casa discografica Lotus', 'DVD','Vasco', null);
+insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Non siamo mica gli americani', 45.01, '1987/12/22','Rock', 20, 'Non siamo mica gli americani è il secondo album in studio del cantautore italiano Vasco Rossi uscito nel 1979, pubblicato dalla casa discografica Lotus', 'CD','Vasco', null);
 insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Hot rats', 45.12, '1980/12/10','Rock', 20,
     'Hot Rats è il settimo album del musicista statunitense Frank Zappa (il suo secondo da solista) pubblicato negli Stati Uniti il 10 ottobre 1969. Il disco, fortemente influenzato da atmosfere jazz rock, non riscosse nessun successo commerciale in patria mentre in Europa, specialmente in Gran Bretagna (nona posizione) e nei Paesi Bassi (sesta posizione), ebbe un ottimo riscontro di pubblico diventando uno dei suoi dischi più celebri e conosciuti.', 'CD','Frank Zappa', null);
 insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Let it be',20.12, '2000/12/31','Pop', 2, 'Let It Be è una canzone dei Beatles del 1970, composta da Paul McCartney anche se viene come da consuetudine attribuita al duo compositivo Lennon/McCartney.', 'CD',null, 'The Beatles');
@@ -177,3 +177,21 @@ insert into cover(product, url_cover) values (2, 'http://www.vascorossiundio.com
 insert into cover(product, url_cover) values (3, 'https://img.discogs.com/OK9dDmCAPSKb5E2mmbHEOhPT5n8=/fit-in/600x598/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-584013-1444143009-3942.jpeg.jpg');
 insert into cover(product, url_cover) values (4, 'https://upload.wikimedia.org/wikipedia/en/2/25/LetItBe.jpg');
 
+
+
+
+insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Sgt. Peppers Lonely Hearts Club Band',15.75, '2017/3/14','Pop', 2, 'Sgt. Peppers Lonely Hearts Club Band is the eighth studio album by English rock band the Beatles. ', 'CD',null, 'The Beatles');
+
+insert into cover(product, url_cover) values (5, 'https://static.independent.co.uk/s3fs-public/styles/article_small/public/thumbnails/image/2017/05/25/16/sgt-peppers-the-beatles.jpg');
+
+insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Yellow Submarine',10.40, '2017/10/11','Pop', 2, 'Yellow Submarine is the tenth studio album by English rock band the Beatles, released on 13 January 1969', 'CD',null, 'The Beatles');
+
+insert into cover(product, url_cover) values (6, 'http://sentireascoltare.com/wp-content/uploads/2015/10/the-beatles-yellow-submarine.jpg');
+
+insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Live Shepperton 1973',20.40, '2017/10/12','Rock', 8, 'A great performance by Genesis. Video remastered from the original 16mm footage.', 'DVD',null, 'Genesis');
+
+insert into cover(product, url_cover) values (7, 'http://www.zupimages.net/up/15/48/d7zo.jpg');
+
+insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Vasco Dal Palco',15.60, '2016/10/12','Rock', 9, 'This DVD contains live vidoclips from the tour from 1990 to 2004', 'DVD','Vasco', null);
+
+insert into cover(product, url_cover) values (8, 'http://www.copertinedvd.org/copertine-cd-file/V/vasco_rossi_-_dal_palco.jpg');

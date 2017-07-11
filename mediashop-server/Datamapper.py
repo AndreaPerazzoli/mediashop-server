@@ -276,7 +276,7 @@ class DM_PG():
 	def getAllProductsPreferredByUsername(self, username):
 		try:
 			with DM_PG.__cursor() as cur:
-				#--selezionare il genere del prodotto più comprato dall'utente X
+				#--seleziono il  genere  del prodotto(CD/DVD) più  comprato dal cliente
 				cur.execute(
 					'select P.main_genre '
 					'from product p '
@@ -296,6 +296,7 @@ class DM_PG():
 				if not listcur:
 					return [{"preferred" :0}]
 				preferredGenre = listcur[0]["main_genre"]
+				# ritorno i prodotti suggeriti in base al genere appena trovato
 				cur.execute(
 					'SELECT  * '
 					'FROM Product P '

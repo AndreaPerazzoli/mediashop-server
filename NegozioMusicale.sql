@@ -190,7 +190,7 @@ insert into cover(product, url_cover) values (6, null);
 
 insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Live Shepperton 1973',20.40, '2017/10/12','Rock', 8, 'A great performance by Genesis. Video remastered from the original 16mm footage.', 'DVD',null, 'Genesis');
 
-insert into cover(product, url_cover) values (7, 'http://www.zupimages.net/up/15/48/d7zo.jpg');
+insert into cover(product, url_cover) values (7, null);
 
 insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Vasco Dal Palco',15.60, '2016/10/12','Rock', 9, 'This DVD contains live vidoclips from the tour from 1990 to 2004', 'DVD','Vasco', null);
 

@@ -107,7 +107,7 @@ create table Track (
 );
 create table Cover(
     product integer primary key references Product(id),
-    url_cover text not null /* oppure data ? */
+    url_cover text  /* oppure data ? */
 
 );
 create table Bill(
@@ -186,7 +186,7 @@ insert into cover(product, url_cover) values (5, 'https://static.independent.co.
 
 insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Yellow Submarine',10.40, '2017/10/11','Pop', 2, 'Yellow Submarine is the tenth studio album by English rock band the Beatles, released on 13 January 1969', 'CD',null, 'The Beatles');
 
-insert into cover(product, url_cover) values (6, 'http://sentireascoltare.com/wp-content/uploads/2015/10/the-beatles-yellow-submarine.jpg');
+insert into cover(product, url_cover) values (6, null);
 
 insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Live Shepperton 1973',20.40, '2017/10/12','Rock', 8, 'A great performance by Genesis. Video remastered from the original 16mm footage.', 'DVD',null, 'Genesis');
 
@@ -195,3 +195,12 @@ insert into cover(product, url_cover) values (7, 'http://www.zupimages.net/up/15
 insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Vasco Dal Palco',15.60, '2016/10/12','Rock', 9, 'This DVD contains live vidoclips from the tour from 1990 to 2004', 'DVD','Vasco', null);
 
 insert into cover(product, url_cover) values (8, 'http://www.copertinedvd.org/copertine-cd-file/V/vasco_rossi_-_dal_palco.jpg');
+
+
+insert into product (title, price, storedDate, main_genre, quantity, description, type, soloist, bandName) values ('Toccate Partite',20.00, '2016/10/12','Classica', 9, 'Girolamo Frescobaldi, (Roma, 1º marzo 1643), è stato un compositore, organista e clavicembalista italiano. È ritenuto uno dei maggiori compositori per clavicembalo del XVII secolo.', 'DVD','Vasco', null);
+
+insert into cover(product, url_cover) values (9, 'http://www.concertoclassics.it/wp-content/uploads/CNT2104_Frescobaldi_Cover-high-res.jpg');
+
+
+
+    

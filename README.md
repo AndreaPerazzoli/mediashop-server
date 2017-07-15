@@ -38,3 +38,4 @@ Se il cliente ha fatto già 3 acquisti superiori ai 250 euro l’uno entro l’a
 
 Il personale autorizzato del negozio può inserire tutti i dati dei CD e DVD in vendita. 
 Il personale inserisce anche il numero di pezzi a magazzino. Il sistema tiene aggiornato il numero dei pezzi a magazzino durante la vendita e avvisa il personale del negozio quando un articolo (CD o DVD) scende sotto i 2 pezzi presenti in magazzino.
+# Mediashop-Server
